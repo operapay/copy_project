@@ -17,7 +17,7 @@ const tabList = [
     },
     {
       key: 'tab3',
-      tab: 'Wave separate',
+      tab: 'Wake separate',
     },
 ];
 

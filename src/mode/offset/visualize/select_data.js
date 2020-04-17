@@ -17,7 +17,6 @@ class FileReader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // csvfile: undefined,
             dataAll : [{name:'', coords: [['', '', '']],date:'',time_1:'',time_2:'',week:''}],
             arr: [{
                 name:'',
@@ -68,16 +67,15 @@ class FileReader extends React.Component {
                 this.getData(nextPorps.test)
             }
         }
-        // console.log('willl')
     }
+
+    //---------countflight---------------//
 
     uniqueNameFlight(name,data,date){
         var count = 0
-        // console.log(data.length)
         for(var i=1;i<data.length;i++){
             if (data[i].name === '-'){
                 count += 1
-                // console.log(i)
             }
         }
         return count
@@ -86,9 +84,10 @@ class FileReader extends React.Component {
     Feature_onhandleChange(value) {
         this.setState({select_feature:value,date_default:"Select Date",flight_default:"Select Flight no",
     time_default: "Select Time", unit_default:"Select Unit",type_default:"Select Type"})
-    // this.getData(this.test)
     }
 
+    //-------------- get data to format---------------//
+    
     getData(result) {
         this.state.arr = [{
             name:'',

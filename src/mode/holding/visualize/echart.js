@@ -35,16 +35,13 @@ class FileReader2 extends React.Component {
         this.test = props.data
         this.name = props.name
         
-        // this.getData = this.getData.bind(this);
-        // this.updateData = this.updateData.bind(this);
     }
   
+    //-------------- label name flight------------//
 
     onhandleChange(value,data) {
-        // console.log(`selected ${value}`);
         var data_select = []
         var data_scatter = []
-        // console.log(value)
         this.setState({checkedList : value})
         for(var j=0;j<value.length;j++){
             for(var i=0;i<data.length;i++){
@@ -52,15 +49,13 @@ class FileReader2 extends React.Component {
                     var state = Math.floor((data[i].coords.length)/2)
                     data_select.push(data[i])
                     data_scatter.push([data[i].coords[state][0],data[i].coords[state][1],data[i].coords[state][2],data[i].name])
-                    // console.log(data[i])
                 }
             }
         }
-        // console.log(data_select)
         this.setState({data : data_select,scatter:data_scatter})
-        // this.setState({data : data_select})
     }
 
+    //--------------- draw chart----------------//
     getOption = () => ({
         maptalks3D: map, 
         series: [

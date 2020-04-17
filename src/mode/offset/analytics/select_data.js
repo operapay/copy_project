@@ -57,6 +57,8 @@ class FileReader extends React.Component {
         this.setState({ click: true });
     };
 
+    //------- compute ground distance ---------//
+
     distance(lat1, lon1, lat2, lon2, unit) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
@@ -81,6 +83,8 @@ class FileReader extends React.Component {
         }
     }
   
+    //------------fliter date-------------//
+
     Date_onhandleChange(value,data) {
         var data_select = []
         var data_time = []
@@ -90,7 +94,6 @@ class FileReader extends React.Component {
         for(var i=0;i<data.length;i++){
             dis = 0
             dis2 = 0
-            // console.log(data[i].date, String(value))
             if(data[i].date === String(value)){
                 data_select.push(data[i])
                 var state = data[i].coords.length-1
@@ -101,16 +104,15 @@ class FileReader extends React.Component {
                 else{
                     data_time.push(data[i].time_2.getHours())
                 }
-                // data_time.push(data[i].time_1.getHours())
-                // console.log(data[i])
             }
         }
-        // console.log(data_time)
-        // console.log(data_time.sort(function(a, b){return a-b}))
+
         var distinct = [...new Set(data_time)].sort(function(a, b){return a-b})
 
         this.setState({distinct_time : distinct, date_name:data_select, time_default:"Select Time",type_default:"Select Section",turn_default : "Select Turn Direction"})
     }
+
+    //------------ fliter time ------------//
 
     Time_onhandleChange(value,data) {
         this.setState({time_default:value,click:false})
@@ -125,6 +127,8 @@ class FileReader extends React.Component {
         // console.log(data_select)
         this.setState({time_flight : data_select,type_default:"Select Section",turn_default : "Select Turn Direction"})
     }
+
+    //------------ fliter section ------------//
 
     Type_onhandleChange(value,data) {
         this.setState({type_default:value,click:false})
@@ -168,6 +172,8 @@ class FileReader extends React.Component {
         this.setState({type_select : data_select ,checkbox:name,turn_default : "Select Turn Direction"})
     }
 
+    //-----------fliter turn direction-------------//
+
     Turn_onhandleChange(value,data) {
         // console.log(value)
         this.setState({turn_default:value,click:false})
@@ -179,10 +185,6 @@ class FileReader extends React.Component {
         var data_east = []
         var dis_check = 0
         var start = 0
-        // var name_west = []
-        // var name_east = []
-
-        // console.log(value)
         if(this.state.type_default === 'Departure'){
             for(var i=0;i<data.length;i++){
                 sum_east = 0
@@ -251,8 +253,6 @@ class FileReader extends React.Component {
         if(value === 'West') data_select = data_west
         else data_select = data_east
 
-        // console.log('real' , data_select)
-
         this.setState({real : data_select})
     }
   
@@ -290,6 +290,7 @@ class FileReader extends React.Component {
                 </Select>
                 </Form.Item>
                 : null}
+
                 {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' && this.state.type_default !== 'Select Section' ?
                 <Form.Item label="Turn Direction">
                 <Select placeholder="Select Turn Direction" style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.turn_default} onChange={e => this.Turn_onhandleChange(e,this.state.type_select)}>
@@ -299,9 +300,9 @@ class FileReader extends React.Component {
                 </Select>
                 </Form.Item>
                 : null}
+
                 {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' && this.state.type_default !== 'Select Section' && this.state.turn_default !== "Select Turn Direction" ?
                 <Button onClick={this.search} style={{backgroundColor:'#b47b44',color:'white'}}>Search</Button> : null}
-                {/* <Button onClick={this.search}>Search</Button> */}
                 </Form>
             </div>
             <div>

@@ -17,10 +17,6 @@ const tabList = [
     },
 ];
 
-// const contentList = {
-//     tab1: <Holding/>,
-//     tab2: <HoldingAnalyze/>,
-// };
 
 class Mode extends React.Component {
   constructor(props) {
@@ -50,6 +46,8 @@ class Mode extends React.Component {
         upload:false
       });
     };
+
+    //---------- read file csv-----------//
   
     importCSV = () => {
       const { csvfile } = this.state;

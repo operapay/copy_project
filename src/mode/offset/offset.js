@@ -47,6 +47,8 @@ class Mode extends React.Component {
       });
     };
   
+    //----------read file import----------------//
+    
     importCSV = () => {
       const { csvfile } = this.state;
       Papa.parse(csvfile, {

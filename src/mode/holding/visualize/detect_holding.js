@@ -37,9 +37,6 @@ class FileReader2 extends React.Component {
         if(this.check === true){
             this.getData(this.test)
         }
-        // console.log('mount')
-        // console.log(this.check)
-        // console.log(this.test)
     }
 
     componentWillUpdate(nextPorps){
@@ -49,8 +46,9 @@ class FileReader2 extends React.Component {
                 this.getData(nextPorps.test)
             }
         }
-        // console.log('willl')
     }
+
+    //----------- count flight------------//
 
     uniqueNameFlight(name,data,date){
         var count = 0
@@ -63,6 +61,8 @@ class FileReader2 extends React.Component {
         }
         return count
     }
+
+    //---------- compute ground distance--------//
 
     distance(lat1, lon1, lat2, lon2, unit) {
         if ((lat1 === lat2) && (lon1 === lon2)) {
@@ -98,87 +98,58 @@ class FileReader2 extends React.Component {
         var check = false
         var sum = 0
         var dist
-        // var time_first
-        // var time_last
         var arr_date = []
-        // console.log(count)
 
         for(var j=0;j<count;j++){
             dis = 100000
             check = false
             sum = 0
-            // time_first = 0
-            // time_last = 0
             var mydate = moment(String(result[num].date), 'YYYY-MM-DD');
             for(var i=num;i<=result.length;i++){
-                // console.log(num)
                 if(result[i].name === '-'){
+
+                    //----------- check arrival-----------//
+
                     if(this.distance(13.6567,100.7518,result[num].lat,result[num].long,"N") < this.distance(13.6567,100.7518,result[i-1].lat,result[i-1].long,"N")){
                         check = false
                     }
                     var test1 = moment(mydate).format("MM/DD/YYYY")+" " + result[num].time
                     var time1 = moment(test1).toDate();
                     var local = moment(time1).format('DD/MM/YYYY');
-                    //console.log(time1)
-                    // dataall_date.push(local)
                     var test2 = moment(mydate).format("MM/DD/YYYY")+" " + result[i-1].time
                     var time2 = moment(test2).toDate();
                     num = i+1
-                    //name = result.data[i][1]
                     this.state.arr[j].coords.pop()
                     break;
                 }
-                // var state = result.length-1
-                // // console.log(state)
-                // dis = this.distance(13.6902099,100.7449953,data[i].coords[0][1], data[i].coords[0][0], "N")
-                // dis2 = this.distance(13.6902099,100.7449953,data[i].coords[state][1], data[i].coords[state][0], "N")
-                // // console.log('check' , this.state.arr)
                 this.state.arr[j].coords.push([])
                 this.state.arr[j].name = result[i].name
                 this.state.arr[j].coords[i-num].push(result[i].long)
                 this.state.arr[j].coords[i-num].push(result[i].lat)
                 this.state.arr[j].coords[i-num].push(result[i].altitude_ft*0.3048)
-                // dist = this.distance(13.6567,100.7518,result.data[i][5],result.data[i][4],"K")
-                // console.log(result.data[i][1]," ", dist)
                 if(check === false){
                     dist = this.distance(13.6567,100.7518,result[i].lat,result[i].long,"N")
+
+                    //------------- check holding-------------//
+
                     if(dist > dis && (dist > 30 & dist < 50)){
-                        // console.log(result.data[i][1]," ", dist)
                         sum = sum + 1
-                        // var timeStart = new Date("01/01/2007 " + data_select[0].date[0][1]);
-                        // if(sum === 1){
-                        //     var mydate = moment(String(result[i].date), 'YYYY-MM-DD');
-                        //     var time1 = new Date(moment(mydate).format("MM/DD/YYYY")+" " + result[i].time);
-                        //     time_first= moment(time1).toDate();
-                        //     var local = moment(time_first).format('DD/MM/YYYY');
-                        //     // console.log('test' + String(result[i].date))
-                        // }
                         if(sum > 15){
-                            // console.log(sum)
                             check = true
                             name = result[i].name
-                            // var mydate = moment(String(result[i].date), 'YYYY-MM-DD');
-                            // time_last = new Date(moment(mydate).format("MM/DD/YYYY")+" " + result[i].time);
                         }
                         
                     }
                     dis = this.distance(13.6567,100.7518,result[i].lat,result[i].long,"N")
-                    // console.log(result.data[i][1]," ", this.distance(13.6567,100.7518,result.data[i][5],result.data[i][4],"N"))
                 }
             }
             if(check === true){
                 this.state.arr[j].time_1 = time1
                 this.state.arr[j].time_2 = time2
                 this.state.arr[j].date = local
-                // arr.push(name)
                 arr_date.push(local)
-                // console.log(name, ':' ,time_first, ' & ', time_last)
             }
-            // else if(check === false){
-            //     console.log('false')
-            //     this.state.arr.pop()
-            // }
-            // console.log(j)
+
             if(j < count-1){
                 this.state.arr.push({name:'', coords: [[]],date:'',time_1:'',time_2:''})
             }

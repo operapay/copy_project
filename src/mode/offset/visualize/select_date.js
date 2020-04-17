@@ -43,21 +43,18 @@ class FileReader extends React.Component {
             checkbox : [],
             what_select : "Date",
             last: null
-            // button_search: true
-            // checkedList: [],
         };
         this.data = props.data
         this.check = props.check
         this.date = props.date
-
-
         this.offsetScrollingRef = React.createRef();
-        // this.getData = this.getData.bind(this);
     }
 
     search = () => {
         this.setState({ click: true });
     };
+
+    //---------compute ground distance----------//
 
     distance(lat1, lon1, lat2, lon2, unit) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
@@ -83,6 +80,8 @@ class FileReader extends React.Component {
         }
     }
   
+    //-------------- fliter date--------------//
+
     Date_onhandleChange(value,data) {
         var data_select = []
         var data_time = []
@@ -106,26 +105,25 @@ class FileReader extends React.Component {
                 // console.log(data[i])
             }
         }
-        // console.log(data_time)
-        // console.log(data_time.sort(function(a, b){return a-b}))
         var distinct = [...new Set(data_time)].sort(function(a, b){return a-b})
 
         this.setState({distinct_time : distinct, date_name:data_select, time_default:"Select Time",type_default:"Select Section"})
     }
 
+    //--------------- fliter time------------//
+
     Time_onhandleChange(value,data) {
         this.setState({time_default:value,click:false})
         var data_select = []
-        // console.log(data)
         for(var i=0;i<data.length;i++){
             if(data[i].time_1.getHours() === parseInt(value) || data[i].time_2.getHours() === parseInt(value)){
                 data_select.push(data[i])
-                // console.log(data[i])
             }
         }
-        // console.log(data_select)
         this.setState({time_flight : data_select,type_default:"Select Section"})
     }
+
+    //-------------fliter section --------------// 
 
     Type_onhandleChange(value,data) {
 
@@ -159,7 +157,7 @@ class FileReader extends React.Component {
                 name_arrival.push(data[i].name) 
             }
         }
-        //console.log(data_departure , data_arrival)
+
         if(value === 'Departure'){
             data_select = data_departure
             name = name_departure
@@ -168,11 +166,6 @@ class FileReader extends React.Component {
             data_select = data_arrival
             name = name_arrival
         }
-
-        // if(this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' && this.state.type_default !== 'Select Type'){
-        //     this.setState({button_search:false})
-        // }
-
 
         this.setState({real : data_select ,checkbox:name})
     }
@@ -193,7 +186,6 @@ class FileReader extends React.Component {
         <div>
             <div style={{marginBottom:'1%'}}>
             <Form layout="inline">
-                {/* <Form layout="inline"> */}
                     <Form.Item label="Date">
                     <Select placeholder="Select Date" style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.date_default} onChange={e => this.Date_onhandleChange(e,this.data)}>
                         {this.date.map(flight => (
@@ -201,7 +193,6 @@ class FileReader extends React.Component {
                         ))}
                     </Select>
                     </Form.Item>
-                {/* </Form> */}
 
                 {this.state.date_default !== 'Select Date' ?
                     <Form.Item label="Time">
@@ -212,7 +203,7 @@ class FileReader extends React.Component {
                     </Select>
                     </Form.Item>
                 : null}
-                {/* </Form> */}
+
                 {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' ?
                     <Form.Item label="Section">
                     <Select placeholder="Select Section" style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.type_default} onChange={e => this.Type_onhandleChange(e,this.state.time_flight)}>
@@ -222,12 +213,7 @@ class FileReader extends React.Component {
                     </Select>
                     </Form.Item>
                 : null}
-                {/* </Form> */}
-                {/* <Select placeholder="Select Turn Direction" disabled style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.type_default} onChange={e => this.Type_onhandleChange(e,this.state.time_flight)}>
-                    {this.state.type.map(flight => (
-                        <Option style={{ fontSize: "1rem" }} key={flight}>{flight}</Option>
-                    ))}
-                </Select> */}
+
                 {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' && this.state.type_default !== 'Select Section' ?
                 <Button onClick={this.search} style={{backgroundColor:'#b47b44',color:'white'}}>Search</Button> : null}
                 </Form>
@@ -236,8 +222,8 @@ class FileReader extends React.Component {
                 <div style={{ position: "relative" }}>
                     <div style={{ position: "absolute", top: -16 }} ref={this.offsetScrollingRef} />
                 </div>
+                
                 {this.state.click === true ? 
-                // {/* {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time' && this.state.type_default !== 'Select Type' && this.state.last !== this.state.type_default? */}
                 <Offset data={this.state.real} name={this.state.checkbox} what={this.state.what_select}/>
                 : null}
             </div>

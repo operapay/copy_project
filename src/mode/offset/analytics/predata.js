@@ -42,16 +42,8 @@ class FileReader extends React.Component {
 
     }
 
-    // componentWillUpdate(nextPorps){
-    //     if(nextPorps.check != this.check && nextPorps.test != this.test){
-    //         console.log(this.check , 'next ', nextPorps.check )
-    //         if(this.check === true){
-    //             this.getData(nextPorps.test)
-    //         }
-    //     }
-    //     // console.log('willl')
-    // }
-
+    //---------- count flight----------//
+    
     uniqueNameFlight(name,data,date){
         var count = 0
         // console.log(data.length)
@@ -64,11 +56,7 @@ class FileReader extends React.Component {
         return count
     }
 
-    // Feature_onhandleChange(value) {
-    //     this.setState({select_feature:value,date_default:"Select Date",flight_default:"Select Flight no",
-    // time_default: "Select Time", unit_default:"Select Unit",type_default:"Select Type"})
-    // // this.getData(this.test)
-    // }
+    //----------get date to format--------//
 
     getData(result) {
         this.state.arr = [{name:'', coords: [[]],date:'',time_1:'',time_2:''}]
@@ -77,36 +65,22 @@ class FileReader extends React.Component {
         var date = result[0].name
         var count = this.uniqueNameFlight(name,result,date)
         var dataall_date = []
-        var dataall_name = []
-        var data_check_time_date = []
-        // console.log(count)
 
         for(var j=0;j<count;j++){
-            //console.log(j)
             var mydate = moment(String(result[num].date), 'YYYY-MM-DD');
-            // console.log(mydate)
-            // dataall_name.push(result[num].name)
             for(var i=num;i<=result.length;i++){
-                // console.log(num)
                 if(result[i].name === '-'){
 
                     var test1 = moment(mydate).format("MM/DD/YYYY")+" " + result[num].time
                     var time1 = moment(test1).toDate();
                     var local = moment(time1).format('DD/MM/YYYY');
-                    //console.log(time1)
                     dataall_date.push(local)
                     var test2 = moment(mydate).format("MM/DD/YYYY")+" " + result[i-1].time
                     var time2 = moment(test2).toDate();
-                    // var onejan = new Date(time1.getFullYear(),0,1);
-                    // var week =  Math.ceil((((time1 - onejan) / 86400000) + onejan.getDay())/7);
-                    // console.log('week ',week)
                     this.state.arr[j].date = local
                     this.state.arr[j].time_1 = time1
                     this.state.arr[j].time_2 = time2
-                    // this.state.arr[j].week = week
-                    // data_check_time_date.push({name: result[num].name,date: date,time_1:time1,time_2:time2})
                     num = i+1
-                    //name = result.data[i][1]
                     this.state.arr[j].coords.pop()
                     break;
                 }
@@ -114,19 +88,15 @@ class FileReader extends React.Component {
                 this.state.arr[j].name = result[i].name
                 this.state.arr[j].coords[i-num].long = result[i].long
                 this.state.arr[j].coords[i-num].lat = result[i].lat
-                // this.state.arr[j].coords[i-num].altitude = result[i].altitude
                 this.state.arr[j].coords[i-num].altitude_ft = result[i].altitude_ft
                 this.state.arr[j].coords[i-num].speed = result[i].speed
             }
-            // console.log(j)
             if(j < count-1){
                 this.state.arr.push({name:'', coords: [[]],date:'',time_1:'',time_2:''})
             }
         }
 
-        // console.log(dataall_date)
         var distinct = [...new Set(dataall_date)]
-        // var distinctName = []
         distinct.sort(function(a, b){
             var aa = a.split('/').reverse().join(),
                 bb = b.split('/').reverse().join();
@@ -140,17 +110,6 @@ class FileReader extends React.Component {
       return (
         <div className="App">
             <h1  style={{color:'#b47b44', margin:'1% 0 1% 0'}}>Offset Analytics</h1>
-            {/* <Select placeholder="Select Feature" style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.select_feature} onChange={e => this.Feature_onhandleChange(e)}>
-                {this.state.feature.map(flight => (
-                    <Option style={{ fontSize: "1rem" }} key={flight}>{flight}</Option>
-                ))}
-            </Select>
-            
-            { this.state.select_feature === 'Date' ?
-            <SelectDate check={this.state.check} data={this.state.dataAll} date={this.state.distinct_date}/>
-            : 
-            <SelectFlight check={this.state.check} data={this.state.dataAll} name={this.state.distinct_name}/>
-            } */}
             
             {this.state.pre === true ?
             <SelectData data={this.state.dataAll} date={this.state.distinct_date}/>: null }

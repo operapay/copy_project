@@ -31,9 +31,7 @@ class FileReader2 extends React.Component {
         this.date = props.date
 
         this.offsetScrollingRef = React.createRef();
-        
-        // this.getData = this.getData.bind(this);
-        // this.updateData = this.updateData.bind(this);
+
     }
 
 
@@ -51,49 +49,44 @@ class FileReader2 extends React.Component {
         }
     }
 
+    //------------ filter date---------------//
+
     Date_onhandleChange(value,data) {
         var data_select = []
         var data_time = []
         this.setState({date_default:value,click:false})
-        // console.log(data)
         for(var i=0;i<data.length;i++){
-            // console.log(data[i].date, String(value))
             if(data[i].date === String(value)){
                 data_select.push(data[i])
                 data_time.push(data[i].time_2.getHours())
-                // console.log(data[i])
             }
         }
-        // console.log(data_time)
-        // console.log(data_time.sort(function(a, b){return a-b}))
+
         var distinct = [...new Set(data_time)].sort(function(a, b){return a-b})
 
         this.setState({distinct_time : distinct, date_name:data_select, time_default:"Select Time"})
     }
 
+    //------------filter time---------------//
+
     Time_onhandleChange(value,data) {
         this.setState({time_default:value,click:false})
         var data_select = []
         var data_name = []
-        // console.log(data)
         for(var i=0;i<data.length;i++){
             if(data[i].time_1.getHours() === parseInt(value) || data[i].time_2.getHours() === parseInt(value)){
                 data_select.push(data[i])
                 data_name.push(data[i].name)
-                // console.log(data[i])
             }
         }
-        // console.log(data_select)
         this.setState({data_time : data_select, name:data_name})
     }
 
     render(props) {
-    //   console.log(this.state.csvfile);
       return (
         <div>
             <div style={{marginBottom:'1%'}}>
             <Form layout="inline">
-                {/* <Form layout="inline"> */}
                 <Form.Item label="Date">
                 <Select placeholder="Select Date" style={{ width: 200, fontSize: "1.2rem", paddingRight:"100 px" }} value={this.state.date_default} onChange={e => this.Date_onhandleChange(e,this.data)}>
                     {this.date.map(flight => (
@@ -115,7 +108,7 @@ class FileReader2 extends React.Component {
                 {this.state.date_default !== 'Select Date' && this.state.time_default !== 'Select Time'?
                 <Button style={{backgroundColor:'#b47b44',color:'white'}} onClick={this.search}>Search</Button> : null}
                 </Form>
-                {/* <Button onClick={this.search}>Search</Button> */}
+                
             </div>
             <div>
                 <div style={{ position: "relative" }}>

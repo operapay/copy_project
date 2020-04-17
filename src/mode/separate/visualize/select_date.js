@@ -266,6 +266,16 @@ class FileReader extends React.Component {
         this.setState({time_flight : data_select,distinct_name:data_select, flight_default:"Select Flight",real:'00:00:00'})
     }
 
+    checkselect(){
+        var hours = [];
+        for(var i =0; i < moment().hour(); i++){
+            hours.push(i);
+        }
+        return hours;
+
+        // if(time !== "Select Time") return true
+    }
+
     onChange = time => {
         // console.log(time);
         this.setState({ time_stamp: time });
@@ -333,7 +343,7 @@ class FileReader extends React.Component {
                     </Select>
                     </Form.Item>
                     <Form.Item label="Time stamp">
-                    <TimePicker defaultValue={moment('00:00:00', 'HH:mm:ss')} value={moment(this.state.real, 'HH:mm:ss')} onChange={e => this.onChange_picktime(e)}/>
+                    <TimePicker defaultValue={moment('00:00:00', 'HH:mm:ss')} disabledHours={() => [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]} value={moment(this.state.real, 'HH:mm:ss')} onChange={e => this.onChange_picktime(e)}/>
                     </Form.Item>
                     </div>
                 : null}

@@ -237,8 +237,8 @@ class FileReader1 extends React.Component {
                 speed_size_des = 450
             } 
             else if(this.state.small.includes(data_select[0].aircraft)) {
-                speed_size = 110*0.868976;    
-                speed_size_des = 250
+                speed_size = 140*0.868976;    
+                speed_size_des = 450
             }
 
             //-----------------compute part ideal-------------------------------

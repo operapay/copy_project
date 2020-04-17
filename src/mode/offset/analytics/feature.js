@@ -352,20 +352,25 @@ class OffsetAnalyze extends React.Component {
                 var xais = []
                 var lateral_nmi = []
                 for(var i=-4;i<=4;i+=0.5){
-                    num.push(Math.abs(i))
+                    num.push(i)
                     xais.push(i)
                 }
                 for(var i=0;i<num.length-1;i++){
                     lateral_nmi.push([xais[i],0])
                 }
                 // console.log(altitude_nmi)
-                for(var i=0;i<distribute[altitude[j]].data.length;i++){
-                    dist = this.distance_xy(avg.data[lateral[j]+1][0],avg.data[lateral[j]+1][1],distribute[lateral[j]].data[i][0],distribute[lateral[j]].data[i][1])
+                for(var i=0;i<distribute[lateral[j]].data.length;i++){
+                    // console.log
+                    // dist = this.distance_xy(avg.data[lateral[j]+1][0],avg.data[lateral[j]+1][1],distribute[lateral[j]].data[i][0],distribute[lateral[j]].data[i][1])
+                    dist = this.distance_xy(avg.data[lateral[j]][0],avg.data[lateral[j]][1],distribute[lateral[j]].data[i][0],distribute[lateral[j]].data[i][1])
+                    // console.log(avg.data[lateral[j]][0],avg.data[lateral[j]][1],distribute[lateral[j]].data[i][0],distribute[lateral[j]].data[i][1])
+                    if(distribute[lateral[j]].data[i][1] < avg.data[lateral[j]][1]) dist = -dist
+                    // console.log(dist)
                     for(var k=0;k<num.length-1;k++){
-                        if(dist >= num[k+1] && dist < num[k] && distribute[lateral[j]].data[i][1] < avg.data[lateral[j]+1][1]){
-                            lateral_nmi[k][1] += 1;
-                        }
-                        else if(dist >= num[k+1] && dist < num[k] && distribute[lateral[j]].data[i][1] >= avg.data[lateral[j]+1][1]){
+                        // console.log(dist)
+                        // console.log(dist , num[k+1], num[k])
+                        if(dist >= num[k] && dist < num[k+1] ){
+                            // console.log(-dist)
                             lateral_nmi[k][1] += 1;
                         }
                     }

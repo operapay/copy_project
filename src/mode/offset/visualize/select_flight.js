@@ -64,6 +64,8 @@ class FileReader extends React.Component {
         }
     }
   
+    //----------fliter same flight no but it have date +- 5 day from this date ------------//
+
     Name_onhandleChange(value,data) {
         var data_select = []
         var data_month = []
@@ -79,8 +81,6 @@ class FileReader extends React.Component {
                 // console.log(data[i])
             }
         }
-        // console.log(data_select)
-        // console.log(data_time.sort(function(a, b){return a-b}))
         var distinctMonth = [...new Set(data_month)]
         var month = []
         for(var i=0;i<distinctMonth.length;i++){
@@ -101,6 +101,8 @@ class FileReader extends React.Component {
         this.setState({data_selected:data_select, distinct_month : month, distinct_week:week, time_default:"Select", unit_default:"Select Unit"})
     }
 
+    //-------------change date to week number------------//
+
     getDateOfWeek(w, y) {
         return moment().day("Monday").year(y).week(w)
     }
@@ -117,6 +119,8 @@ class FileReader extends React.Component {
         }
         this.setState({distinct_time:data_select, time_default:"Select"})
     }
+
+    //---------fliter time --------------//
 
     Time_onhandleChange(value,data) {
         this.setState({time_default:value,click:false})
